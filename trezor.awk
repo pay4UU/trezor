@@ -1,6 +1,4 @@
 #!/usr/bin/awk -f
-
-
 function fc(num) {
     f = 1;
     for (i=1; i<num; f *= ++i)
@@ -31,6 +29,15 @@ function printmulty(d,r) {
     printf(Color_Off);
 }
 
+function printcol(sep) {
+    printf(sep)
+    printf(sep)
+    for (j = 0; j< 7; j++){
+        printf(sep)
+        printf(sep)
+    }
+}
+
 BEGIN {
     k=ARGV[1];
     n=ARGV[2]?ARGV[2]:ARGV[1];
@@ -41,9 +48,12 @@ BEGIN {
     Green="\033[0;32m"        # Green
     Yellow="\033[0;33m"       # Yellow
     Color_Off="\033[0m"       # Text Reset
+    BBlack="\033[1;30m"
+    BWhite="\033[1;37m"       # White
+
     
     ThouSep=""
-    ColumnSep="_______"+"_______"
+    ColumnSep="________"
 
     if ( ARGC > 1 && n >= k ){
         s=365*24*60*60;
@@ -57,38 +67,36 @@ BEGIN {
         }    
     }
     else{
-        #printf("Pouzitie: %s pocetPlatnychSlov pocetCelkom zvysPocetCelkom\n", ENVIRON["_"]);
-        #printf("pocetPlatnychSlov (%d) nesmie byt vacsi ako pocetCelkom (%d)\n", ARGV[1], ARGV[2]);
+        printf(Green);
+
+        printf("Pouzitie:\n\t %s pocetPlatnychSlov pocetCelkom zvysPocetCelkom\n", ENVIRON["_"]);
+        printf("\tpocetPlatnychSlov (%d) nesmie byt vacsi ako pocetCelkom (%d)\n", ARGV[1], ARGV[2]);
+        printf("\tpriklad: %s 5 5 1\n", ENVIRON["_"]);
 
         printf(Yellow);
-        printf(ColumnSep)
-        for (j = 0; j< 7; j++)
-            printf(ColumnSep)
-
-        printf("\npočet\t\tfaktorial\t\nSlov(k)\t\tn=k");
+        printcol(ColumnSep)
+        printf("\npočet\t\tfakt\t\nSlov(k)\t\tn=k");
         for (j = 0; j< 6; j++)
             printf("\t\tn=k+%d",2^j )
-        print ""
-        
-        printf(Yellow);
-        printf(ColumnSep);
-        for (j = 0; j< 7; j++)
-            printf(ColumnSep)
+        print
+        printcol(ColumnSep)
         printf(Color_Off);
-        
-        print ""
-            
+        print             
         for ( ind = 1; ind < 10 ; ind++ ){
-            printf("%2d|\t%\04710.6G\t", ind, var( ind, ind +0, 0) );
+            printf("%2d|\t%\04712.10G\t", ind, var( ind, ind +0, 0) );
             for (j = 0; j< 6; j++)
-                printf("%\04710.6G\t",var(ind,ind+2^j,0) )
+                printf("%\04712.10G\t",var(ind,ind+2^j,0) )
             print ""
         }
 
         for ( ind = 10; ind < 30 ; ind+=2 ){
-            printf("%2d|\t%\04710.2G\t", ind, var( ind, ind +0, 0) );
-            for (j = 0; j< 6; j++)
-                printf("%\04710.2G\t",var(ind,ind+2^j,0) )
+            printf("%2d|\t%\04710.10G\t", ind, var( ind, ind +0, 0) );
+            for (j = 0; j< 6; j++){
+                if ( ind == 24 )
+                    printf(BWhite)
+                printf("%\04710.10G\t",var(ind,ind+2^j,0) )
+                printf(Color_Off);
+            }
             print ""
         }
         print
