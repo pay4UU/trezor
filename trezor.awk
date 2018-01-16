@@ -38,6 +38,35 @@ function printcol(sep) {
     }
 }
 
+function printusage() {
+    printf(Green);
+
+    printf("Pouzitie:\n\t %s pocetPlatnychSlov pocetCelkom zvysPocetCelkom\n", ENVIRON["_"]);
+    printf("\tpocetPlatnychSlov (%d) nesmie byt vacsi ako pocetCelkom (%d)\n", ARGV[1], ARGV[2]);
+    printf("\tpriklad: %s 5 5 1\n", ENVIRON["_"]);
+}
+
+function printLeftCulomn( ind ) {
+    printf(Yellow);
+    printf("%2d  |\t", ind)
+    printf(Color_Off);
+}
+
+function printMil( mil ) {
+    if ( mil < 1E7)
+        printf("%\04712d\t", mil );
+    else
+        printf("%\04712.4G\t", mil );
+}
+
+function printRow( ind ) {
+    printMil( var( ind, ind +0, 0) );
+    for (j = 0; j< 6; j++)
+        printMil( var(ind,ind+2^j,0) )
+    printMil( var(ind,60,0) )
+    print ""
+}
+
 BEGIN {
     k=ARGV[1];
     n=ARGV[2]?ARGV[2]:ARGV[1];
@@ -67,37 +96,26 @@ BEGIN {
         }    
     }
     else{
-        printf(Green);
-
-        printf("Pouzitie:\n\t %s pocetPlatnychSlov pocetCelkom zvysPocetCelkom\n", ENVIRON["_"]);
-        printf("\tpocetPlatnychSlov (%d) nesmie byt vacsi ako pocetCelkom (%d)\n", ARGV[1], ARGV[2]);
-        printf("\tpriklad: %s 5 5 1\n", ENVIRON["_"]);
+        printusage();
 
         printf(Yellow);
         printcol(ColumnSep)
-        printf("\npočet\t\tfakt\t\nSlov(k)\t\tn=k");
+        printf("\npočet  \tfaktorial\nSlov(k)  \tn=k");
         for (j = 0; j< 6; j++)
-            printf("\t\tn=k+%d",2^j )
+            printf("  \tn=k+%d\t",2^j )
         print
         printcol(ColumnSep)
         printf(Color_Off);
+    
         print             
         for ( ind = 1; ind < 10 ; ind++ ){
-            printf("%2d|\t%\04712.10G\t", ind, var( ind, ind +0, 0) );
-            for (j = 0; j< 6; j++)
-                printf("%\04712.10G\t",var(ind,ind+2^j,0) )
-            print ""
+            printLeftCulomn( ind )
+            printRow( ind )
         }
 
         for ( ind = 10; ind < 30 ; ind+=2 ){
-            printf("%2d|\t%\04710.10G\t", ind, var( ind, ind +0, 0) );
-            for (j = 0; j< 6; j++){
-                if ( ind == 24 )
-                    printf(BWhite)
-                printf("%\04710.10G\t",var(ind,ind+2^j,0) )
-                printf(Color_Off);
-            }
-            print ""
+            printLeftCulomn( ind )
+            printRow( ind )   
         }
         print
     }
