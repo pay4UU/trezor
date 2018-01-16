@@ -37,12 +37,10 @@ function printfract(r) {
     printf("%f: %d %d/12",r, zcel, zzlom)
 }
 
-function printcol(sep,horiz) {
+function printcol(sep,horiz,col) {
     printf(sep horiz)
-#    printf(sep)
-    for (j = 0; j< 8; j++){
-        printf(sep "__" horiz)
-#        printf(sep horiz)
+    for (j = 0; j< col; j++){
+        printf(sep horiz)
     }
 }
 
@@ -56,7 +54,7 @@ function printusage() {
 
 function printLeftCulomn( ind ) {
     printf(Yellow);
-    printf("%6d  |", ind)
+    printf("%8d  |", ind)
     printf(Color_Off);
 }
 
@@ -89,10 +87,10 @@ BEGIN {
     BBlack="\033[1;30m"
     BWhite="\033[1;37m"       # White
 
-    
     ThouSep=""
-    ColumnSep="________"
-
+    ColumnSep="__________"
+    EmptySep="          "
+    
     if ( ARGC > 1 && n >= k ){
         s=365*24*60*60;
         m1 = var(k,n,s)
@@ -108,12 +106,14 @@ BEGIN {
         printusage();
 
         printf(Yellow);
-        printcol(ColumnSep, ".")
-        printf("\npočet   |faktorial.|\nSlov(k) | n=k \t   |");
+        printcol(ColumnSep, " ",8)
+        printf("\npočet Slov|faktorial |")
+        printcol(EmptySep,"|",6)
+        printf("\n    (k)   | n=k      |");
         for (j = 0; j< 6; j++)
-            printf(" n=k+%3d  |",2^j )
+            printf(" n= k+%3d |",2^j )
         printf(" n=k+%3d  |\n",36 )
-        printcol(ColumnSep , "|")
+        printcol(ColumnSep , "|",8)
         printf(Color_Off);
     
         print             
@@ -126,7 +126,7 @@ BEGIN {
             printLeftCulomn( ind )
             printRow( ind )   
         }
-        print
+        print "U+255x"
     }
 }
 
