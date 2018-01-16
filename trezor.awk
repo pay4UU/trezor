@@ -19,8 +19,10 @@ function printvar(k,n,m,s) {
 
     printf("Uhadnutie poradia %d slov z %d\n", k, n);
     printf("* treba vyskusat %\047.0f moznosti (%1.2e)\n", m, m);
+    #printMil( mil )
     printf("* trvalo by to asi %\0471.2f rokov (%1.2e)\n", 10*m/s, 10*m/s);
     printf("\033[0;32m* alebo %\047.1f nasobkov veku vesmiru (%1.2e)\033[0m\n", 10*m/s/vv, 10*m/s/vv);
+    printfract(10*m/s/vv)
 }
 
 function printmulty(d,r) {
@@ -29,12 +31,18 @@ function printmulty(d,r) {
     printf(Color_Off);
 }
 
-function printcol(sep) {
-    printf(sep)
-    printf(sep)
-    for (j = 0; j< 7; j++){
-        printf(sep)
-        printf(sep)
+function printfract(r) {
+    zcel=int(r);
+    zzlom=(r-zcel)*12;
+    printf("%f: %d %d/12",r, zcel, zzlom)
+}
+
+function printcol(sep,horiz) {
+    printf(sep horiz)
+#    printf(sep)
+    for (j = 0; j< 8; j++){
+        printf(sep "__" horiz)
+#        printf(sep horiz)
     }
 }
 
@@ -48,16 +56,10 @@ function printusage() {
 
 function printLeftCulomn( ind ) {
     printf(Yellow);
-    printf("%2d  |\t", ind)
+    printf("%6d  |", ind)
     printf(Color_Off);
 }
 
-function printMil( mil ) {
-    if ( mil < 1E7)
-        printf("%\04712d\t", mil );
-    else
-        printf("%\04712.4G\t", mil );
-}
 
 function printRow( ind ) {
     printMil( var( ind, ind +0, 0) );
@@ -65,6 +67,13 @@ function printRow( ind ) {
         printMil( var(ind,ind+2^j,0) )
     printMil( var(ind,60,0) )
     print ""
+}
+
+function printMil( mil ) {
+    if ( mil < 1E7)
+        printf("%\04710d|", mil );
+    else
+        printf("%\04710.4G|", mil );
 }
 
 BEGIN {
@@ -99,12 +108,12 @@ BEGIN {
         printusage();
 
         printf(Yellow);
-        printcol(ColumnSep)
-        printf("\npočet  \tfaktorial\nSlov(k)  \tn=k");
+        printcol(ColumnSep, ".")
+        printf("\npočet   |faktorial.|\nSlov(k) | n=k \t   |");
         for (j = 0; j< 6; j++)
-            printf("  \tn=k+%d\t",2^j )
-        print
-        printcol(ColumnSep)
+            printf(" n=k+%3d  |",2^j )
+        printf(" n=k+%3d  |\n",36 )
+        printcol(ColumnSep , "|")
         printf(Color_Off);
     
         print             
