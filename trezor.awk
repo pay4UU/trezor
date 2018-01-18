@@ -108,11 +108,13 @@ BEGIN {
         printf(Yellow);
         printcol(ColumnSep, " ",8)
         printf("\npočet Slov|faktorial |")
+        
         printcol(EmptySep,"|",6)
         printf("\n    (k)   | n=k      |");
         for (j = 0; j< 6; j++)
             printf(" n= k+%3d |",2^j )
         printf(" n=k+%3d  |\n",36 )
+        
         printcol(ColumnSep , "|",8)
         printf(Color_Off);
     
@@ -121,12 +123,14 @@ BEGIN {
             printLeftCulomn( ind )
             printRow( ind )
         }
-
         for ( ind = 10; ind < 30 ; ind+=2 ){
             printLeftCulomn( ind )
             printRow( ind )   
         }
-        print "U+255x"
+        for ( ind = 30; ind < 100 ; ind+=10 ){
+            printLeftCulomn( ind )
+            printRow( ind )   
+        }
     }
 }
 
