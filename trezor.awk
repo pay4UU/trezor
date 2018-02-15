@@ -16,13 +16,15 @@ function var(k,n,s) {
 
 function printvar(k,n,m,s) {
     vv = 13.798e9
+    doba = 100
+    trvanie = doba*m/s
+    nasobok = trvanie/vv
 
     printf("Uhadnutie poradia %d slov z %d\n", k, n);
     printf("* treba vyskusat %\047.0f moznosti (%1.2e)\n", m, m);
     #printMil( mil )
-    printf("* trvalo by to asi %\0471.2f rokov (%1.2e)\n", 10*m/s, 10*m/s);
-    printf("\033[0;32m* alebo %\047.1f nasobkov veku vesmiru (%1.2e)\033[0m\n", 10*m/s/vv, 10*m/s/vv);
-    printfract(10*m/s/vv)
+    printf("* trvalo by to asi %\0471.2f rokov (%1.2e)\n", trvanie, trvanie);
+    printf("\033[0;32m* alebo %s nasobkov veku vesmiru (%1.2e)\033[0m\n", printfract(nasobok), nasobok);
 }
 
 function printmulty(d,r) {
@@ -31,10 +33,27 @@ function printmulty(d,r) {
     printf(Color_Off);
 }
 
+function log2(r){
+
+    return log(r)/log(2)
+}
+
+function ceil(valor)
+{
+  return (valor == int(valor)) ? valor : int(valor)+1
+}
+
 function printfract(r) {
     zcel=int(r);
-    zzlom=(r-zcel)*12;
-    printf("%f: %d %d/12",r, zcel, zzlom)
+    zzlom=(r-zcel);
+    menovatel = int(ceil(log2(1/zzlom)))
+
+    printf("%f %f", log2(1/zzlom), menovatel)
+
+    if ( menovatel > 1)
+        return sprintf("%d/%d", r*2^menovatel, 2^menovatel)
+    else
+        return sprintf("%d", r)
 }
 
 function printcol(sep,horiz,col) {
