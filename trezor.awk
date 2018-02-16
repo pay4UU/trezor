@@ -9,21 +9,22 @@ function fc(num) {
     return f;
 }
 
-function var(k,n,s) {
+function variacia(k,n) {
     m=fc(n)/fc(n-k);
     return m;
 }
 
-function printvar(k,n,m,s) {
-    vv = 13.798e9
-    doba = 100
+function printvar(k,n,m) {
+    s=365*24*60*60  # pocet sekund v roku
+    vv = 13.798e9   # doba trvania vesmiru
+    doba = 100      # cas v sekundach na zadanie seedu
     trvanie = doba*m/s
     nasobok = trvanie/vv
 
     printf("Uhadnutie poradia %d slov z %d\n", k, n);
     printf("* treba vyskusat %\047.0f moznosti (%1.2e)\n", m, m);
     #printMil( mil )
-    printf("* trvalo by to asi %\0471.2f rokov (%1.2e)\n", trvanie, trvanie);
+    printf("* trvalo by to asi %s rokov (%1.2e)\n", printfract(trvanie), trvanie);
     printf("\033[0;32m* alebo %s nasobkov veku vesmiru (%1.2e)\033[0m\n", printfract(nasobok), nasobok);
 }
 
@@ -48,12 +49,12 @@ function printfract(r) {
     zzlom=(r-zcel);
     menovatel = int(ceil(log2(1/zzlom)))
 
-    printf("%f %f", log2(1/zzlom), menovatel)
+#    printf("%f %d %d", r, menovatel, 2^menovatel)
 
-    if ( menovatel > 1)
+    if ( zcel <= 1)
         return sprintf("%d/%d", r*2^menovatel, 2^menovatel)
     else
-        return sprintf("%d", r)
+        return sprintf("%\0471.2f", r)
 }
 
 function printcol(sep,horiz,col) {
@@ -111,15 +112,13 @@ BEGIN {
     EmptySep="          "
     
     if ( ARGC > 1 && n >= k ){
-        s=365*24*60*60;
-        m1 = var(k,n,s)
-        printvar(k,n,m1,s)    
+        m1 = variacia(k,n)
+        printvar(k,n,m1)    
         if ( d > 0){
-            m2=var(k,n+d,s);
-            printvar(k,n+d,m2,s);
+            m2=variacia(k,n+d);
+            printvar(k,n+d,m2);
             printmulty(d,m2/m1);
- #           printf("zaokruhlene %\047.f krat dlhsie \n",fc(n+d)/fc(n)/fc(d));
-        }    
+         }    
     }
     else{
         printusage();
