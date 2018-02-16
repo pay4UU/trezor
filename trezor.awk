@@ -80,10 +80,10 @@ function printLeftCulomn( ind ) {
 
 
 function printRow( ind ) {
-    printMil( var( ind, ind +0, 0) );
+    printMil( variacia( ind, ind +0) );
     for (j = 0; j< 6; j++)
-        printMil( var(ind,ind+2^j,0) )
-    printMil( var(ind,60,0) )
+        printMil( variacia(ind,ind+2^j) )
+    printMil( variacia(ind,60) )
     print ""
 }
 
