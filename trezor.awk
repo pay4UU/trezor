@@ -22,10 +22,10 @@ function printvar(k,n,m) {
     nasobok = trvanie/vv
 
     printf("Uhadnutie poradia %d slov z %d\n", k, n);
-    printf("* treba vyskusat %\047.0f moznosti (%1.2e)\n", m, m);
+    printf("* treba vyskusat %\0479.3G moznosti\n", m);
     #printMil( mil )
-    printf("* trvalo by to asi %s rokov (%1.2e)\n", printfract(trvanie), trvanie);
-    printf("\033[0;32m* alebo %s nasobkov veku vesmiru (%1.2e)\033[0m\n", printfract(nasobok), nasobok);
+    printf("* trvalo by to asi %s rokov\n", printfract(trvanie));
+    printf("\033[0;32m* alebo %s nasobkov veku vesmiru\033[0m\n", printfract(nasobok));
 }
 
 function printmulty(d,r) {
@@ -47,14 +47,15 @@ function ceil(valor)
 function printfract(r) {
     zcel=int(r);
     zzlom=(r-zcel);
-    menovatel = int(ceil(log2(1/zzlom)))
+    
+    if ( zcel <= 1 && zzlom > 0.0 )
+    {
+        menovatel = int(ceil(log2(1/zzlom)))
 
-#    printf("%f %d %d", r, menovatel, 2^menovatel)
-
-    if ( zcel <= 1)
-        return sprintf("%d/%d", r*2^menovatel, 2^menovatel)
+        return sprintf("%d/%d", r*2^menovatel, 2^menovatel)  
+    }       
     else
-        return sprintf("%\0471.2f", r)
+        return sprintf("%\0479.3G", r)
 }
 
 function printcol(sep,horiz,col) {
