@@ -22,7 +22,7 @@ function printvar(k,n,m) {
     nasobok = trvanie/vv
 
     printf("Uhadnutie poradia %d slov z %d\n", k, n);
-    printf("* treba vyskusat %\0479.3G moznosti\n", m);
+    printf("* treba vyskusat %s moznosti\n", printfract(m));
     #printMil( mil )
     printf("* trvalo by to asi %s rokov\n", printfract(trvanie));
     printf("\033[0;32m* alebo %s nasobkov veku vesmiru\033[0m\n", printfract(nasobok));
@@ -52,10 +52,17 @@ function printfract(r) {
     {
         menovatel = int(ceil(log2(1/zzlom)))
 
-        return sprintf("%d/%d", r*2^menovatel, 2^menovatel)  
+        return sprintf("%d/%\047d", r*2^menovatel, 2^menovatel)  
     }       
     else
-        return sprintf("%\0479.3G", r)
+    {
+        # return sprintf("BIG")
+        if ( r < 10000000 )
+            return sprintf(" %\047d ", zcel)
+        else
+            return sprintf(" %\0479.3G", r)
+    }
+    
 }
 
 function printcol(sep,horiz,col) {
@@ -71,6 +78,11 @@ function printusage() {
     printf("Pouzitie:\n\t %s pocetPlatnychSlov pocetCelkom zvysPocetCelkom\n", ENVIRON["_"]);
     printf("\tpocetPlatnychSlov (%d) nesmie byt vacsi ako pocetCelkom (%d)\n", ARGV[1], ARGV[2]);
     printf("\tpriklad: %s 5 5 1\n", ENVIRON["_"]);
+
+        printf("\tPočet možných kľúčov: %G\n", 256^32);
+        printf("\tPočet možných kľúčov: %G\n", 2^160); 
+        #There are exactly 2^160 possible addresses as long as we keep using RIPE-MD160. 2^160 is 1,461,501,637,330,902,918,203,684,832,716,283,019,655,932,542,976.
+        printf("\tTrafit nahodne: %G\n", 2^32);
 }
 
 function printLeftCulomn( ind ) {
@@ -94,6 +106,7 @@ function printMil( mil ) {
     else
         printf("%\04710.4G|", mil );
 }
+
 
 BEGIN {
     k=ARGV[1];
